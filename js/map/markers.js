@@ -5,12 +5,15 @@ import { MARKER_STYLE } from '../config.js';
 export function createMarker(feature, highlightTerm) {
   const m = L.circleMarker([feature.lat, feature.lng], MARKER_STYLE);
   m.bindTooltip(`${feature.region} · ${feature.industry}`, { direction: 'top', offset: [0, -6] });
-  m.on('click', () => {
-    // 点击后把卡片插到右侧最上面
-    const panel = document.getElementById('results');
-    panel.insertAdjacentHTML('afterbegin', makeDetailCard(feature, highlightTerm));
-    panel.scrollTop = 0;
-  });
+m.on('click', () => {
+  const target = document.getElementById(`card-${feature.id}`);
+  if (!target) return;
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // 高亮闪一下
+  target.style.transition = 'background .3s';
+  target.style.background = '#fef08a';
+  setTimeout(() => target.style.background = '', 600);
+});
   return m;
 }
 

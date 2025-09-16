@@ -2,7 +2,7 @@ export function makeCard(f, term) {
   const esc = str => str.replace(/[&<>]/g, d => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[d]));
   const hi = str => term ? esc(str).replace(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), m => `<mark class="hit">${m}</mark>`) : esc(str);
   return `
-    <div class="card" data-id="${f.id}">
+    <div class="card" id="card-${f.id}">   <!-- 就改这里 -->
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
         <div>
           <div style="font-weight:600;">${hi(f.region)}</div>
