@@ -1,18 +1,26 @@
+// js/ui/card.js
+
 export function makeCard(f, term) {
-  const esc = str => str.replace(/[&<>]/g, d => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[d]));
-  const hi = str => term ? esc(str).replace(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), m => `<mark class="hit">${m}</mark>`) : esc(str);
+  const esc = s => s ? s.replace(/[&<>]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[t])) : '';
+  
+  const hi = s => {
+    const txt = esc(s);
+    if (!term) return txt;
+    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return txt.replace(re, '<mark class="hit">$1</mark>');
+  };
+
+  // 包含必要的 id 和 onclick
   return `
-    <div class="card" id="card-${f.id}">   <!-- 就改这里 -->
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-        <div>
-          <div style="font-weight:600;">${hi(f.region)}</div>
-          <div class="muted" style="font-size:12px;">类别：<span class="pill">${f.category}</span></div>
-        </div>
-        <button onclick="focusMarker('${f.id}')" style="border:1px solid #ddd; background:#fff; border-radius:8px; padding:6px 10px; cursor:pointer;">定位</button>
+    <div class="card" id="card-${f.id}" onclick="window.locateOnMap('${f.id}')">
+      <div class="card-header">
+        <span class="card-title">${hi(f.region)}</span>
+        <span class="card-pill">${f.category}</span>
       </div>
-      <div style="margin-top:6px;">
+      <div class="card-body">
         <div><strong>产业：</strong>${hi(f.industry)}</div>
-        ${f.note ? `<div class="muted" style="margin-top:4px;"><strong>备注：</strong>${hi(f.note)}</div>` : ''}
+        ${f.note ? `<div class="card-note">${hi(f.note)}</div>` : ''}
       </div>
-    </div>`;
+    </div>
+  `;
 }
