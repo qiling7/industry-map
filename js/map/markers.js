@@ -83,8 +83,8 @@ export function updateMarkersStyle(filteredIDs) {
         baseStyle.opacity = 1;
         marker.bringToFront();
       } else {
-        baseStyle.fillOpacity = 0.1;
-        baseStyle.opacity = 0.1;
+        baseStyle.fillOpacity = 0.3;
+        baseStyle.opacity = 0.3;
         baseStyle.weight = 0; 
       }
     }
